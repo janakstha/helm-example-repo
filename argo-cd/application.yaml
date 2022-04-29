@@ -39,13 +39,18 @@ spec:
         ingress:
           enabled: true
           className: alb
-          path: /
-          hosts:
-            - example.int.unzer.io
           annotations:
+            alb.ingress.kubernetes.io/group.name: example-public-ingress-group
             alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:eu-central-1:779569392134:certificate/136c9216-6d52-41c9-b00d-51adf1c3b33e
             alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
             alb.ingress.kubernetes.io/ssl-redirect: '443'
+            alb.ingress.kubernetes.io/scheme: internet-facing
+          hosts:
+            - host: example.int.unzer.io
+              paths:
+                - path: /
+                  pathType: ImplementationSpecific
+
       # Optional Helm version to template with. If omitted it will fall back to look at the 'apiVersion' in Chart.yaml
       # and decide which Helm binary to use automatically. This field can be either 'v2' or 'v3'.
       version: v2
