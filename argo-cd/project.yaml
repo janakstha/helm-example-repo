@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: nginx
+  namespace: argocd
+spec:
+  description: SRE team configurations for test cluster
+  destinations:
+    - server: https://kubernetes.default.svc
+      namespace: default
+  sourceRepos:
+    - https://github.com/janakstha/nginx.git
+  clusterResourceWhitelist:
+    - group: ''
+      kind: ''
+  namespaceResourceBlacklist:
+    - group: ''
+      kind: ResourceQuota
+    - group: ''
+      kind: LimitRange
+    - group: ''
+      kind: NetworkPolicy
+  roles:
+    # A role which provides read-only access to all applications in the project
+    - name: read-only
+      description: Read-only privileges to SRE
+      policies:
+        - p, proj:nginx:read-only, applications, *, nginx/*, allow
+      groups:
+        - sg-azure-argocd-sre-admin
