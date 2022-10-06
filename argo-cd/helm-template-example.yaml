@@ -45,7 +45,7 @@ metadata:
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app.kubernetes.io/name: example
@@ -78,7 +78,12 @@ spec:
               path: /
               port: http
           resources:
-            {}
+            limits:
+              cpu: 100m
+              memory: 128Mi
+            requests:
+              cpu: 50m
+              memory: 64Mi
 ---
 # Source: example/templates/ingress.yaml
 apiVersion: networking.k8s.io/v1
