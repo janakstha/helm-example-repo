@@ -1,0 +1,70 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nginx
+  # You'll usually want to add your resources to the argocd namespace.
+  namespace: argocd
+  # Add this finalizer ONLY if you want these to cascade delete.
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  # Add labels to your application object.
+  labels:
+    name: nginx
+spec:
+  # Destination cluster and namespace to deploy the application
+  destination:
+    # The namespace will only be set for namespace-scoped resources that have not set a value for .metadata.namespace
+    namespace: argocd
+    server: 'https://kubernetes.default.svc'
+  # Source of the application manifests
+  source:
+    path: example
+    repoURL: 'https://github.com/janakstha/helm-example-repo.git'
+    targetRevision: HEAD
+
+    helm:
+      # Helm values files for overriding values in the helm chart
+      # The path is relative to the spec.source.path directory defined above
+      valueFiles:
+        - values.yaml
+      # Extra parameters to set (same as setting through values.yaml, but these take precedence)
+      parameters:
+        - name: replicaCount
+          value: '1'
+      # Values file as block file
+      values: |
+        ingress:
+          enabled: true
+          className: alb
+          annotations:
+            alb.ingress.kubernetes.io/group.name: example-public-ingress-group
+            alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:eu-central-1:779569392134:certificate/136c9216-6d52-41c9-b00d-51adf1c3b33e
+            alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
+            alb.ingress.kubernetes.io/ssl-redirect: '443'
+            alb.ingress.kubernetes.io/scheme: internet-facing
+            alb.ingress.kubernetes.io/target-type: ip
+          hosts:
+            - host: example.int.unzer.io
+              paths:
+                - path: /
+                  pathType: ImplementationSpecific
+  # The project the application belongs to.
+  project: example
+  # Sync policy
+  syncPolicy:
+    automated:
+      prune: true # Specifies if resources should be pruned during auto-syncing ( false by default ).
+      selfHeal: true # Specifies if partial app sync should be executed when resources are changed only in target Kubernetes cluster and no git change detected ( false by default ).
+      allowEmpty: false # Allows deleting all application resources during automatic syncing ( false by default ).
+    # The retry feature is available since v1.7
+    retry:
+      limit: 5 # number of failed sync attempt retries; unlimited number of attempts if less than 0
+      backoff:
+        duration: 5s # the amount to back off. Default unit is seconds, but could also be a duration (e.g. "2m", "1h")
+        factor: 2 # a factor to multiply the base duration after each failed retry
+        maxDuration: 3m0s # the maximum amount of time allowed for the backoff strategy
+    syncOptions:  # Sync options which modifies sync behavior
+      - Validate=false # disables resource validation (equivalent to 'kubectl apply --validate=false') ( true by default ).
+      - CreateNamespace=true # Namespace Auto-Creation ensures that namespace specified as the application destination exists in the destination cluster.
+      - PrunePropagationPolicy=foreground # Supported policies are background, foreground and orphan.
+      - PruneLast=true # Allow the ability for resource pruning to happen as a final, implicit wave of a sync operation
