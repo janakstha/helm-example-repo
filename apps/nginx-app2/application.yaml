@@ -44,7 +44,7 @@ spec:
             alb.ingress.kubernetes.io/scheme: internet-facing
             alb.ingress.kubernetes.io/target-type: ip
           hosts:
-            - host: example2.int.unzer.io
+            - host: nginx2.int.unzer.io
               paths:
                 - path: /
                   pathType: ImplementationSpecific
