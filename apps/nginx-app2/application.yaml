@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: nginx
+  name: nginx2
   # You'll usually want to add your resources to the argocd namespace.
   namespace: argocd
   # Add this finalizer ONLY if you want these to cascade delete.
@@ -9,7 +9,7 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
   # Add labels to your application object.
   labels:
-    name: nginx
+    name: nginx2
 spec:
   # Destination cluster and namespace to deploy the application
   destination:
