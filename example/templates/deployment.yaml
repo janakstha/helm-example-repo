@@ -4,8 +4,10 @@ metadata:
   name: {{ include "example.fullname" . }}
   labels:
     {{- include "example.labels" . | nindent 4 }}
-  annotations:  
-    {{- include "example.annotations" . | nindent 4 }}
+    {{- with .Values.komodor.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
