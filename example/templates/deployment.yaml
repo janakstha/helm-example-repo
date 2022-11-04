@@ -4,6 +4,8 @@ metadata:
   name: {{ include "example.fullname" . }}
   labels:
     {{- include "example.labels" . | nindent 4 }}
+  annotations:  
+    {{- include "example.annotations" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
