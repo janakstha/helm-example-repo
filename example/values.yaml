@@ -80,3 +80,7 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+komodor:
+  annotations:
+    app.komodor.com/app: https://github.com/janakstha/helm-example-repo
+    app.komodor.com/app.ref: 3350e3311f9520fe5e237e2d71f339029ee051d8
