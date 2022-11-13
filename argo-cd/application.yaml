@@ -47,7 +47,7 @@ spec:
             - host: example.int.unzer.io
               paths:
                 - path: /
-                  pathType: ImplementationSpecific
+                pathType: ImplementationSpecific
   # The project the application belongs to.
   project: example
   # Sync policy
