@@ -31,7 +31,7 @@ jobs:
           # config_file: .yamllint
           # Custom configuration (as YAML source)
           # config_data: # Single line
-          config_data: "{extends: default, rules: {new-line-at-end-of-file: disable}}"
+          config_data: "{extends: default, rules: {new-line-at-end-of-file: disable, line-length: disable}}"
           # Format for parsing output [parsable,standard,colored,github,auto]
           format: parsable # optional, default is parsable
           # Return non-zero exit code on warnings as well as errors
