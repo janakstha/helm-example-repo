@@ -26,11 +26,12 @@ jobs:
         uses: ibiqlik/action-yamllint@v3.1.1
         with:
           # File(s) or Directory, separate by space if multiple files or folder are specified
-          file_or_dir: example/*.yaml
+          file_or_dir: example
           # Path to custom configuration
-          config_file: yamllinter.yaml
+          # config_file: .yamllint
           # Custom configuration (as YAML source)
-          # config_data: # optional
+          # config_data: # Single line
+          config_data: "{extends: default, rules: {new-line-at-end-of-file: disable}}"
           # Format for parsing output [parsable,standard,colored,github,auto]
           format: parsable # optional, default is parsable
           # Return non-zero exit code on warnings as well as errors
