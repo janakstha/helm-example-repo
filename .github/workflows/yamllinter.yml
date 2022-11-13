@@ -26,12 +26,40 @@ jobs:
         uses: ibiqlik/action-yamllint@v3.1.1
         with:
           # File(s) or Directory, separate by space if multiple files or folder are specified
-          file_or_dir: example
+          file_or_dir: argo-cd
           # Path to custom configuration
           # config_file: .yamllint
           # Custom configuration (as YAML source)
           # config_data: # Single line
-          config_data: "{extends: default, rules: {new-line-at-end-of-file: disable, line-length: disable, document-start: disable}}"
+          config_data: |
+            extends: default
+            rules:
+              braces: disable
+              brackets: enable
+              colons: enable
+              commas: enable
+              comments:
+                level: warning
+              comments-indentation:
+                level: warning
+              document-end: disable
+              document-start:
+                level: warning
+              empty-lines: enable
+              empty-values: disable
+              float-values: disable
+              hyphens: enable
+              indentation: enable
+              key-duplicates: enable
+              key-ordering: disable
+              line-length: disable
+              new-line-at-end-of-file: disable
+              new-lines: enable
+              octal-values: disable
+              quoted-strings: disable
+              trailing-spaces: disable
+              truthy:
+                level: warning
           # Format for parsing output [parsable,standard,colored,github,auto]
           format: parsable # optional, default is parsable
           # Return non-zero exit code on warnings as well as errors
