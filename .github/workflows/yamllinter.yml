@@ -1,0 +1,39 @@
+# This workflow executes several linters on changed files based on languages used in your code base whenever
+# you push a code or open a pull request.
+#
+# You can adjust the behavior by modifying this file.
+# For more information, see:
+# https://github.com/github/super-linter
+name: Yaml Lint
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+jobs:
+  run-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          # Full git history is needed to get a proper list of changed files within `super-linter`
+          fetch-depth: 0
+      - name: YAML Lint
+        # You may pin to the exact commit or the version.
+        # uses: ibiqlik/action-yamllint@2576378a8e339169678f9939646ee3ee325e845c
+        uses: ibiqlik/action-yamllint@v3.1.1
+        with:
+          # File(s) or Directory, separate by space if multiple files or folder are specified
+          file_or_dir: # optional
+          # Path to custom configuration
+          config_file: # optional
+          # Custom configuration (as YAML source)
+          config_data: # optional
+          # Format for parsing output [parsable,standard,colored,github,auto]
+          format: # optional, default is parsable
+          # Return non-zero exit code on warnings as well as errors
+          strict: # optional, default is false
+          # Output only error level problems
+          no_warnings: # optional, default is false
