@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: self-hosted-actions-runner0
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  description: self-hosted-actions-runner configurations for int cluster
+  destinations:
+    - server: https://kubernetes.default.svc
+      namespace: actions-runner-system
+  sourceRepos:
+    - https://github.com/janakstha/helm-example-repo.git
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  namespaceResourceBlacklist:
+    - group: ''
+      kind: ResourceQuota
+    - group: ''
+      kind: LimitRange
+    - group: ''
+      kind: NetworkPolicy

@@ -1,0 +1,34 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    notifications.argoproj.io/subscribe.on-deployed.p3-acceptance: "On Deployed"
+    notifications.argoproj.io/subscribe.on-health-degraded.p3-acceptance: "On Health Degraded"
+    notifications.argoproj.io/subscribe.on-sync-failed.p3-acceptance: "On Sync Failed"
+    notifications.argoproj.io/subscribe.on-sync-running.p3-acceptance: "On Sync Running"
+    notifications.argoproj.io/subscribe.on-sync-status-unknown.p3-acceptance: "On Sync Status Unknown"
+    notifications.argoproj.io/subscribe.on-sync-succeeded.p3-acceptance: "On Sync Status Succeeded"
+  name: 'self-hosted-github-actions-runner0'
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: 'self-hosted-actions-runner0'
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: 'actions-runner-system'
+  source:
+    path: 'p3-alpha-self-hosted-actions-runner'
+    repoURL: 'https://github.com/janakstha/helm-example-repo.git'
+    targetRevision: develop
+  syncPolicy:
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
+    automated:
+      prune: true
+      selfHeal: false
+    syncOptions: {}

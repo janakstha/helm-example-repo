@@ -1,0 +1,18 @@
+apiVersion: actions.summerwind.dev/v1alpha1
+kind: HorizontalRunnerAutoscaler
+metadata:
+  name: p3-paypal-pmp-self-hosted-runner-deployment-autoscaler
+  namespace: actions-runner-system
+spec:
+  scaleDownDelaySecondsAfterScaleOut: 30
+  scaleTargetRef:
+    # Your RunnerDeployment Here
+    name: p3-paypal-pmp-self-hosted-runner
+    kind: RunnerDeployment
+  minReplicas: 0
+  maxReplicas: 5
+
+  metrics:
+    - type: TotalNumberOfQueuedAndInProgressWorkflowRuns
+      repositoryNames:
+      - unzercorp/paypal-pmp

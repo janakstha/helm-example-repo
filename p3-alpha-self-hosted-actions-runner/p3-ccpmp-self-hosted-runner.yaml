@@ -1,0 +1,26 @@
+apiVersion: actions.summerwind.dev/v1alpha1
+kind: RunnerDeployment
+metadata:
+  name: p3-credit-card-pmp-self-hosted-runner
+  namespace: actions-runner-system
+spec:
+  replicas: 1
+  template:
+    spec:
+      repository: unzercorp/credit-card-pmp
+      # https://github.com/actions-runner-controller/actions-runner-controller/blob/master/docs/detailed-docs.md
+      image: 437291019013.dkr.ecr.eu-central-1.amazonaws.com/github/runner:0.0.8
+      labels:
+        - p3-actions-runner
+      env:
+        - name: RUNNER_ORG
+          value: unzercorp
+        - name: GITHUB_OWNER
+          value: unzercorp
+        - name: GITHUB_REPOSITORY
+          value: credit-card-pmp
+        - name: GITHUB_PAT
+          valueFrom:
+            secretKeyRef:
+              name: controller-manager
+              key: github_token
